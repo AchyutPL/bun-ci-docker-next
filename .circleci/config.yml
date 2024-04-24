@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Login to the server and deploy
           command: |
-            sh ../scripts/deploy.sh
+            sh ./scripts/deploy.sh
 
                
 
