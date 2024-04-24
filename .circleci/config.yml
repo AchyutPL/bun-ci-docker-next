@@ -1,25 +1,42 @@
 ---
 version: 2.1
 jobs:
-  build:
-    working_directory: ~/repo
+  setup:
     docker:
-      - image: imbios/bun-node:18-slim
+      - image: alpine:3.14
     steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "bun.lockb" }}
-      - run:
-          name: Install Dependencies
-          command: bun install
-      - save_cache:
-          key: dependency-cache-{{ checksum "bun.lockb" }}
-          paths:
-            - ./node_modules
+      - enter
+      - enter_ther_server:
+          - apk add git
+          - apk add openssh-client
+          - apk add bash
+          - which ssh-agent || ( apk add openssh )
+          - eval $(ssh-agent)
+          - echo "ssh key is $SSH_PRIVATE_KEY"
+          - echo "$SSH_PRIVATE_KEY" > id_rsa
+          - chmod 600 id_rsa
+          - ssh-add id_rsa
+          - mkdir -p ~/.ssh
+          - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  # build:
+  #   working_directory: ~/repo
+  #   docker:
+  #     - image: imbios/bun-node:18-slim
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         key: dependency-cache-{{ checksum "bun.lockb" }}
+  #     - run:
+  #         name: Install Dependencies
+  #         command: bun install
+  #     - save_cache:
+  #         key: dependency-cache-{{ checksum "bun.lockb" }}
+  #         paths:
+  #           - ./node_modules
   deploy:
     working_directory: ~/repo
     docker:
-      - image: imbios/bun-node:18-slim
+     - image: alpine:3.14
     steps:
       - setup_remote_docker
       - run:
