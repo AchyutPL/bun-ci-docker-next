@@ -1,14 +1,30 @@
 ---
 version: 2.1
 jobs:
-  setup:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: imbios/bun-node:18-slim
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "bun.lockb" }}
+      - run:
+          name: Test If we have a valid build or not
+          command: |
+            bun install
+            bun run build
+      - save_cache:
+          key: dependency-cache-{{ checksum "bun.lockb" }}
+          paths:
+            - ./node_modules
+  deploy:
     docker:
       - image: alpine:3.14
     steps:
       - run:
-         name: Enter The Server
-
-         command: |
+          name: Setup for entering to server
+          command: |
               apk add git
               apk add openssh-client
               apk add bash
@@ -19,44 +35,21 @@ jobs:
               pwd
               ls
               ssh-add id_rsa
-              # mkdir -p ~/.ssh
-              # '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+              mkdir -p ~/.ssh
+              '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-  build:
-    working_directory: ~/repo
-    docker:
-      - image: imbios/bun-node:18-slim
-    steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "bun.lockb" }}
-      # - run:
-      #     name: Install Dependencies
-      #     command: bun install
-      # - save_cache:
-      #     key: dependency-cache-{{ checksum "bun.lockb" }}
-      #     paths:
-      #       - ./node_modules
-
-  deploy:
-    working_directory: ~/repo
-    docker:
-     - image: alpine:3.14
-    steps:
-      - setup_remote_docker
       - run:
-          name: Deploy app to the server
-          command: ./scripts/deploy.sh
+           name: Login to the server and deploy
+           command: ./scripts/deploy.sh
+
+               
 
 
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - setup
-      - build:
-          requires:
-            - setup
+      - build
       - deploy:
           requires:
             - build
