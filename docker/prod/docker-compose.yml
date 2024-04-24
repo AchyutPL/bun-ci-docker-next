@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  nextjs_prod:
+    container_name: nextjs_prod
+    build:
+      context: ../../
+      dockerfile: docker/prod/Dockerfile
+    image: nextjs_prod_image
+    ports:
+      - '3000:3000'
