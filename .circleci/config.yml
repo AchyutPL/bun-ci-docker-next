@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Update NPM
-          command: "sudo bun install"
+          command: "bun install"
       - restore_cache:
           key: dependency-cache-{{ checksum "bun.lockb" }}
       - run:
