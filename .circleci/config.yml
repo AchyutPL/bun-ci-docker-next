@@ -41,7 +41,7 @@ jobs:
 
       - run:
            name: Login to the server and deploy
-           command: bash scripts/deploy.sh
+           command: bash ../scripts/deploy.sh
 
                
 
