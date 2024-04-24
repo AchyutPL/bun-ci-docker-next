@@ -14,8 +14,7 @@ jobs:
               apk add bash
               which ssh-agent || ( apk add openssh )
               eval $(ssh-agent)
-              printf "Value of SSH_PRIVATE_KEY: %s\n" "$SSH_PRIVATE_KEY" -x
-              echo "$SSH_PRIVATE_KEY" | base64 --decode > id_rsa
+              echo "$SSH_PRIVATE_KEY" | base64 -d > id_rsa
               chmod 600 id_rsa
               pwd
               ls
