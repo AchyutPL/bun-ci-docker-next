@@ -5,7 +5,6 @@ jobs:
     docker:
       - image: alpine:3.14
     steps:
-      - enter
       - run:
          name: Enter The Server
          command: |
@@ -36,7 +35,7 @@ jobs:
       #     key: dependency-cache-{{ checksum "bun.lockb" }}
       #     paths:
       #       - ./node_modules
-      
+
   deploy:
     working_directory: ~/repo
     docker:
