@@ -13,7 +13,7 @@ jobs:
               apk add bash
               which ssh-agent || ( apk add openssh )
               eval $(ssh-agent)
-              echo "ssh key is $SSH_PRIVATE_KEY"
+              echo "ssh key is \"$SSH_PRIVATE_KEY\""
               echo "$SSH_PRIVATE_KEY" > id_rsa
               chmod 600 id_rsa
               ssh-add id_rsa
