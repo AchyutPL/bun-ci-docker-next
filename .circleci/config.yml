@@ -21,21 +21,22 @@ jobs:
               mkdir -p ~/.ssh
               '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-  # build:
-  #   working_directory: ~/repo
-  #   docker:
-  #     - image: imbios/bun-node:18-slim
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         key: dependency-cache-{{ checksum "bun.lockb" }}
-  #     - run:
-  #         name: Install Dependencies
-  #         command: bun install
-  #     - save_cache:
-  #         key: dependency-cache-{{ checksum "bun.lockb" }}
-  #         paths:
-  #           - ./node_modules
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: imbios/bun-node:18-slim
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "bun.lockb" }}
+      # - run:
+      #     name: Install Dependencies
+      #     command: bun install
+      # - save_cache:
+      #     key: dependency-cache-{{ checksum "bun.lockb" }}
+      #     paths:
+      #       - ./node_modules
+      
   deploy:
     working_directory: ~/repo
     docker:
