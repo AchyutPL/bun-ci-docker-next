@@ -12,6 +12,7 @@ jobs:
       - run:
           name: Test If we have a valid build or not
           command: |
+            ls
             bun install
             bun run build
       - save_cache:
@@ -42,6 +43,7 @@ jobs:
       - run:
           name: Login to the server and deploy
           command: |
+            cd /root/repo
             sh ./scripts/deploy.sh
 
                
