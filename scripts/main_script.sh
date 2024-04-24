@@ -2,8 +2,6 @@ SERVER_FOLDER=/var/www/html/bun-ci-docker-next
 
 cd ${SERVER_FOLDER} || exit
 
-pwd 
+sudo git fetch --all
 
-git fetch --all
-
-git pull
+sudo git pull
