@@ -40,8 +40,9 @@ jobs:
 
 
       - run:
-           name: Login to the server and deploy
-           command: bash ../scripts/deploy.sh
+          name: Login to the server and deploy
+          command: |
+            sh ../scripts/deploy.sh
 
                
 
