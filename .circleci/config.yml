@@ -33,13 +33,13 @@ jobs:
               apk add bash
               which ssh-agent || ( apk add openssh )
               eval $(ssh-agent)
-              echo "$SSH_PRIVATE_KEY" | base64 -d > id_rsa
-              chmod 600 id_rsa
+              echo "$ENTRY_KEY" | base64 -d > key.pem
+              chmod 600 key.pem
               pwd
               ls
-              ssh-add id_rsa
-              mkdir -p ~/.ssh
-              /bin/bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+              # ssh-add id_rsa
+              # mkdir -p ~/.ssh
+              # /bin/bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
       - run:
           name: Login to the server and deploy
