@@ -33,8 +33,8 @@ jobs:
               apk add bash
               which ssh-agent || ( apk add openssh )
               eval $(ssh-agent)
-              echo "$ENTRY_KEY" | base64 -d > key.pem
-              chmod 600 key.pem
+              echo "$ENTRY_KEY" | base64 -d > access_key.pem
+              chmod 600 access_key.pem
               pwd
               ls
               # ssh-add id_rsa
