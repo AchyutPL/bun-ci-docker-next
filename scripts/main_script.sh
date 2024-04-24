@@ -13,8 +13,8 @@ sudo git pull
 # Rebuild the Docker image with the latest changes
 # Make sure your Docker image name matches your Dockerfile
 # Assuming your Dockerfile is in the current directory
-sudo docker build -t nextjs_prod .
+sudo docker compose -f docker/prod/docker-compose.yml up -d --build
 
 # Restart the Docker container with the updated image
 # Make sure your Docker container name matches "nextjs_prod"
-sudo docker restart nextjs_prod
+# sudo docker-compose restart nextjs_prod
