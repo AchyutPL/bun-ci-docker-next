@@ -7,15 +7,15 @@ jobs:
     steps:
       - run:
          name: Enter The Server
-         
+
          command: |
               apk add git
               apk add openssh-client
               apk add bash
               which ssh-agent || ( apk add openssh )
               eval $(ssh-agent)
-              printf "Value of SSH_PRIVATE_KEY: %s\n" "$SSH_PRIVATE_KEY"
-              echo "$SSH_PRIVATE_KEY" > id_rsa
+              printf "Value of SSH_PRIVATE_KEY: %s\n" "$SSH_PRIVATE_KEY" -x
+              echo "$SSH_PRIVATE_KEY" | base64 --decode > id_rsa
               chmod 600 id_rsa
               pwd
               ls
