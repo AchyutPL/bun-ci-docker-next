@@ -24,6 +24,7 @@ jobs:
     docker:
       - image: alpine:3.14
     steps:
+      - checkout
       - run:
           name: Setup for entering to server
           command: |
@@ -43,7 +44,6 @@ jobs:
       - run:
           name: Login to the server and deploy
           command: |
-            cd /root/repo
             ls
             sh ./scripts/deploy.sh
 
