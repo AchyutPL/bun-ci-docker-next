@@ -19,6 +19,7 @@ jobs:
           paths:
             - ./node_modules
   deploy:
+    working_directory: ~/repo
     docker:
       - image: alpine:3.14
     steps:
@@ -38,11 +39,9 @@ jobs:
               mkdir -p ~/.ssh
               /bin/bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-
       - run:
           name: Login to the server and deploy
           command: |
-            ls
             sh ./scripts/deploy.sh
 
                
