@@ -16,9 +16,10 @@ jobs:
               printf "Value of SSH_PRIVATE_KEY: %s\n" "$SSH_PRIVATE_KEY"
               echo "$SSH_PRIVATE_KEY" > id_rsa
               chmod 600 id_rsa
-              ssh-add id_rsa
-              mkdir -p ~/.ssh
-              '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+              ls
+              # ssh-add id_rsa
+              # mkdir -p ~/.ssh
+              # '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
   build:
     working_directory: ~/repo
