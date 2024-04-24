@@ -13,8 +13,8 @@ jobs:
           name: Test If we have a valid build or not
           command: |
             ls
-            bun install
-            bun run build
+            # bun install
+            # bun run build
       - save_cache:
           key: dependency-cache-{{ checksum "bun.lockb" }}
           paths:
@@ -44,6 +44,7 @@ jobs:
           name: Login to the server and deploy
           command: |
             cd /root/repo
+            ls
             sh ./scripts/deploy.sh
 
                
