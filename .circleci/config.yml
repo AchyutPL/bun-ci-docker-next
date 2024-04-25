@@ -22,25 +22,9 @@ jobs:
   deploy:
     working_directory: ~/repo
     docker:
-      - image: alpine:3.14
+      - image: docker:dind
     steps:
       - checkout
-      - run:
-          name: Setup for entering to server
-          command: |
-              apk add git
-              apk add openssh-client
-              apk add bash
-              which ssh-agent || ( apk add openssh )
-              eval $(ssh-agent)
-              echo "$ENTRY_KEY" | base64 -d > access_key.pem
-              chmod 600 access_key.pem
-              pwd
-              ls
-              # ssh-add id_rsa
-              mkdir -p ~/.ssh
-              /bin/bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
       - run:
           name: Login to the server and deploy
           command: |
