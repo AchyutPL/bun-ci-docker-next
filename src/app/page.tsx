@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-       <video src="https://d2b2g1vdz26nnr.cloudfront.net/test.mp4" controls></video>
+       <video src="https://d2b2g1vdz26nnr.cloudfront.net/videos/test.mp4" controls></video>
     </main>
   );
 }
