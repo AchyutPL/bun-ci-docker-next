@@ -14,4 +14,4 @@ docker tag bun_docker_next achyutatp/bun-docker-next:latest
 
 echo ${DOCKER_HUB_TOKEN} | docker login -u achyutatp --password-stdin docker.io
 
-docker push docker.io/achyutatp/bun-docker-next:lates
+docker push docker.io/achyutatp/bun-docker-next:latest
