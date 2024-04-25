@@ -24,7 +24,7 @@ CIRCLE_TAG="$1"
 
 sudo docker pull achyutatp/bun-docker-next:${CIRCLE_TAG}
 
-sudo docker service update --image achyutatp/bun-docker-next:${CIRCLE_TAG} bun_next_ci
+sudo docker service update --image achyutatp/bun-docker-next:${CIRCLE_TAG} bun_next_bun_ci_next
 
 
 
