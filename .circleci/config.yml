@@ -19,7 +19,7 @@ jobs:
           key: dependency-cache-{{ checksum "bun.lockb" }}
           paths:
             - ./node_modules
-            
+
   deploy:
     working_directory: ~/repo
     docker:
@@ -28,13 +28,23 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          command: |
+              which ssh-agent || ( apt-get install -qq openssh-client )
+              eval $(ssh-agent)
+              echo "$ENTRY_KEY" | base64 -d > access_key.pem
+              chmod 600 access_key.pem
+              pwd
+              ls
+              # ssh-add id_rsa
+              mkdir -p ~/.ssh
+              /bin/bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+      - run:
           name: Login to the server and deploy
           command: |
             ls
             sh ./scripts/deploy.sh
 
                
-
 
 workflows:
   build-and-deploy:
