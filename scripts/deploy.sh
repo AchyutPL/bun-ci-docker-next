@@ -12,6 +12,8 @@ docker images
 
 docker tag bun_docker_next achyutatp/bun-docker-next:latest
 
+echo "Tag Name: ${CIRCLE_TAG}"
+
 echo ${DOCKER_HUB_TOKEN} | docker login -u achyutatp --password-stdin docker.io
 
 docker push docker.io/achyutatp/bun-docker-next:latest

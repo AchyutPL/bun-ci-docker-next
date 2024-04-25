@@ -19,6 +19,7 @@ jobs:
           key: dependency-cache-{{ checksum "bun.lockb" }}
           paths:
             - ./node_modules
+            
   deploy:
     working_directory: ~/repo
     docker:
@@ -36,10 +37,15 @@ jobs:
 
 
 workflows:
-  version: 2
   build-and-deploy:
     jobs:
-      - build
+      - build:
+          filters:
+            tags:
+              only: /.*/
       - deploy:
+          filters:
+            tags:
+              only: /.*/
           requires:
             - build
