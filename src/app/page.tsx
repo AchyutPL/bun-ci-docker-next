@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import os from 'os';
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -15,7 +15,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{" "}
+            By{os.hostname()}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"

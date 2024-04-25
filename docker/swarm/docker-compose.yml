@@ -1,10 +1,10 @@
 version: '3.8'
 services:
   bun_ci_next:
-    image: achyutatp/bun-docker-next:latest
-    restart: always
+    image: achyutatp/bun-docker-next:2.0.0
     networks:
       - bun
+
     deploy:
       mode: replicated
       replicas: 2
@@ -13,6 +13,17 @@ services:
         failure_action: rollback
         delay: 5s
 
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - bun_ci_next
+    ports:
+      - '3000:80'
+    networks:
+      - bun
 
 networks:
-  bun:
+  bun: 
+    driver: overlay
