@@ -52,10 +52,10 @@ workflows:
       - build:
           filters:
             tags:
-              only: /.*/
+              only: /^release-.*/
       - deploy:
           filters:
             tags:
-              only: /.*/
+               only: /^release-.*/
           requires:
             - build

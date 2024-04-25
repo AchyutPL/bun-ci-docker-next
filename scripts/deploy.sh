@@ -16,12 +16,12 @@ echo "Tag Name: ${CIRCLE_TAG}"
 
 echo ${DOCKER_HUB_TOKEN} | docker login -u achyutatp --password-stdin docker.io
 
-docker push docker.io/achyutatp/bun-docker-next:latest
+docker push docker.io/achyutatp/bun-docker-next:${CIRCLE_TAG}
 
 
 DEPLOY_SERVER="35.154.15.237"
 
-ssh -i ./access_key.pem ubuntu@${DEPLOY_SERVER} 'bash -s' < ./scripts/main_script.sh
+ssh -i ./access_key.pem ubuntu@${DEPLOY_SERVER} 'bash -s' < ./scripts/main_script.sh "$CIRCLE_TAG"
 
 echo "Finished"
 

@@ -19,7 +19,9 @@
 # Make sure your Docker container name matches "nextjs_prod"
 # sudo docker-compose restart nextjs_prod
 
+# Get the CIRCLE_TAG value
+CIRCLE_TAG="$1"
 
-sudp docker pull achyutatp/bun-docker-next:latest
+sudo docker pull achyutatp/bun-docker-next:latest
 
 sudo docker run -d -p 3000:3000 achyutatp/bun-docker-next:latest
