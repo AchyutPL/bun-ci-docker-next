@@ -22,9 +22,10 @@ jobs:
   deploy:
     working_directory: ~/repo
     docker:
-      - image: docker:dind
+      - image: cimg/base:2024.02
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Login to the server and deploy
           command: |
