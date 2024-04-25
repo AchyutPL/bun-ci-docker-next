@@ -22,6 +22,10 @@
 # Get the CIRCLE_TAG value
 CIRCLE_TAG="$1"
 
-sudo docker pull achyutatp/bun-docker-next:latest
+sudo docker pull achyutatp/bun-docker-next:${CIRCLE_TAG}
 
-sudo docker run -d -p 3000:3000 achyutatp/bun-docker-next:latest
+docker service update --image achyutatp/spells:${CIRCLE_TAG} bun_next_ci_socket
+
+
+
+# sudo docker run -d -p 3000:3000 achyutatp/bun-docker-next:latest

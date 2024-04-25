@@ -10,7 +10,7 @@ docker build -t bun_docker_next -f docker/prod/Dockerfile .
 
 docker images
 
-docker tag bun_docker_next achyutatp/bun-docker-next:latest
+docker tag bun_docker_next achyutatp/bun-docker-next:${CIRCLE_TAG}
 
 echo "Tag Name: ${CIRCLE_TAG}"
 
