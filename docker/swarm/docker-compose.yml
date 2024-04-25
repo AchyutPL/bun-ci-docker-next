@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   bun_ci_next:
-    image: achyutatp/bun-docker-next:2.0.0
+    image: achyutatp/bun-docker-next:2.0.4
     networks:
       - bun
 
@@ -11,7 +11,7 @@ services:
       update_config:
         order: start-first
         failure_action: rollback
-        delay: 5s
+        delay: 50s
 
   nginx:
     image: nginx:latest

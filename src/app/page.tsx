@@ -1,6 +1,15 @@
 import Image from "next/image";
 import os from 'os';
-export default function Home() {
+import getId from 'docker-container-id'
+
+
+const HOSTNAME=process.env.HOSTNAME;
+
+
+
+export default async function Home() {
+    let id = await getId();
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -15,7 +24,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{os.hostname()}
+            By{os.hostname()} TEST ---- {HOSTNAME} -- {id}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
