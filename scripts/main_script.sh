@@ -26,6 +26,8 @@ sudo docker pull achyutatp/bun-docker-next:${CIRCLE_TAG}
 
 sudo docker service update --image achyutatp/bun-docker-next:${CIRCLE_TAG} bun_next_bun_ci_next
 
+# remove all unused images
+docker image prune -af
 
 
 # sudo docker run -d -p 3000:3000 achyutatp/bun-docker-next:latest

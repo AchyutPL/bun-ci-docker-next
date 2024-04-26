@@ -1,1 +1,0 @@
-declare module "docker-container-id"
