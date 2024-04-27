@@ -46,10 +46,12 @@ jobs:
       - run:
           name: Login to the server and deploy
           command: |
+              [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
               tar -czf /tmp/webapp.tar.gz .
-              ssh -o StrictHostKeyChecking=no << parameters.host >> 'bash -s' < ./scripts/ssh-setup.sh'
+              ls -a
+              ssh << parameters.host >> 'bash -s' < ./scripts/ssh-setup.sh
               scp /tmp/webapp.tar.gz << parameters.host >>:~/webapp/
-              ssh -o StrictHostKeyChecking=no << parameters.host >> 'bash -s' < ./scripts/ssh-deploy.sh'
+              ssh << parameters.host >> 'bash -s' < ./scripts/ssh-deploy.sh
 
           
 
