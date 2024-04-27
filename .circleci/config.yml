@@ -23,6 +23,7 @@ jobs:
             - .env
             - .next/
             - public/
+            - scripts/
   package:
     docker:
       - image: cimg/base:2024.02
