@@ -57,9 +57,9 @@ jobs:
               ssh << parameters.host >> "rm -rf ~/webapp/ || true"
               pwd
               ls -a
-              tar -czf /tmp/webapp.tgz.gz .
+              tar -czf /tmp/webapp.tar.gz .
               ls -a
-              scp /tmp/webapp.tgz.gz << parameters.host >>:~/webapp/
+              scp /tmp/webapp.tar.gz << parameters.host >>:~/webapp/
               # # scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
               ssh << parameters.host >> "tar -xzf ~/webapp/webapp.tar.gz -C ~/webapp/ && rm -f ~/webapp/webapp.tar.gz"
               # ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build"
