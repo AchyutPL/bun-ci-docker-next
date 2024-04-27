@@ -1,4 +1,3 @@
----
 version: 2.1
 jobs:
   build:
@@ -18,12 +17,15 @@ jobs:
           key: dependency-cache-{{ checksum "bun.lockb" }}
           paths:
             - ./node_modules
+
       - persist_to_workspace:
           root: ./
           paths:
             - .env
             - .next/
             - public/
+
+
   package:
     docker:
       - image: cimg/base:2024.02
@@ -33,25 +35,35 @@ jobs:
           root: ./
           paths:
             - docker/prod/*
+
+
   deploy:
     docker:
       - image: cimg/base:2024.02
+
     parameters:
       host:
         type: string
         default: $DEV_HOST
+
+
     steps:
       - attach_workspace:
           at: ./
       - run:
           name: Login to the server and deploy
           command: |
+              ssh -o StrictHostKeyChecking=no << parameters.host >> 'exit'
+              ssh << parameters.host >> "rm -rf ~/webapp/ || true"
               tar -czf /tmp/webapp.tar.gz .
-              ssh -o StrictHostKeyChecking=no << parameters.host >> 'bash -s' < ./scripts/ssh-setup.sh'
+              ls /tmp
+              ssh << parameters.host >> "mkdir webapp"
               scp /tmp/webapp.tar.gz << parameters.host >>:~/webapp/
-              ssh -o StrictHostKeyChecking=no << parameters.host >> 'bash -s' < ./scripts/ssh-deploy.sh'
-
-          
+              ssh << parameters.host >> "tar -xzf ~/webapp/webapp.tar.gz -C ~/webapp/ && rm -f ~/webapp/webapp.tar.gz"
+              ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build"
+              ssh << parameters.host >> "cd webapp && docker container rm -f lancon-webapp || true"
+              ssh << parameters.host >> "cd webapp && docker image prune -f"
+              ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml up -d"
 
                
 # With package
@@ -62,15 +74,17 @@ workflows:
           filters:
             tags:
               only: /^release-.*/
+
       - package:
-          filters:
-            tags:
-              only: /^release-.*/
-          requires:
-            - build
+            filters:
+               tags:
+                  only: /^release-.*/
+            requires:
+              - build
+           
       - deploy:
           filters:
             tags:
-              only: /^release-.*/
+               only: /^release-.*/
           requires:
             - package
