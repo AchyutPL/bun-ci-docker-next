@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
   build:
-    working_directory: ~/repo
     docker:
       - image: imbios/bun-node:18-slim
     steps:
@@ -56,15 +55,17 @@ jobs:
           command: |
               ssh -o StrictHostKeyChecking=no << parameters.host >> 'exit'
               ssh << parameters.host >> "rm -rf ~/webapp/ || true"
+              pwd
+              ls
               tar -czf webapp.tar.gz -C /home/circleci/project/ .
               ls
-              scp webapp.tar.gz << parameters.host >>:~/webapp/
-              # scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
-              ssh << parameters.host >> "tar -xzf ~/webapp/webapp.tar.gz -C ~/webapp/ && rm -f ~/webapp/webapp.tar.gz"
-              ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build"
-              ssh << parameters.host >> "cd webapp && docker container rm -f lancon-webapp || true"
-              ssh << parameters.host >> "cd webapp && docker image prune -f"
-              ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml up -d"
+              # scp webapp.tar.gz << parameters.host >>:~/webapp/
+              # # scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
+              # ssh << parameters.host >> "tar -xzf ~/webapp/webapp.tar.gz -C ~/webapp/ && rm -f ~/webapp/webapp.tar.gz"
+              # ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build"
+              # ssh << parameters.host >> "cd webapp && docker container rm -f lancon-webapp || true"
+              # ssh << parameters.host >> "cd webapp && docker image prune -f"
+              # ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml up -d"
 
                
 # With package
