@@ -1,4 +1,3 @@
----
 version: 2.1
 jobs:
   build:
@@ -43,10 +42,15 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
+      - run: 
+          name : Docker ssh Setup
+          command: |
+            mkdir -p ~/.ssh
+            [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
       - run:
           name: Login to the server and deploy
           command: |
-              [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
               tar -czf /tmp/webapp.tar.gz .
               ls -a
               ssh << parameters.host >> 'bash -s' < ./scripts/ssh-setup.sh

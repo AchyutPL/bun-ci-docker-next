@@ -34,7 +34,6 @@ jobs:
               chmod 600 access_key.pem
               pwd
               ls
-              # ssh-add id_rsa
               mkdir -p ~/.ssh
               /bin/bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
       - run:
