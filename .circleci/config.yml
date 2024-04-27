@@ -49,7 +49,7 @@ jobs:
           name: Login to the server and deploy
           command: |
             ssh -o StrictHostKeyChecking=no << parameters.host >> 'exit'
-            ls
+            ssh << parameters.host >> "ls"
             # ssh << parameters.host >> "rm -rf ~/webapp/ || true"
             # scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
             # ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build
