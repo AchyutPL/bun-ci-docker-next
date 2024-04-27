@@ -28,11 +28,10 @@ jobs:
       - persist_to_workspace:
           root: ./
           paths:
-            - docker/prod
+            - docker/prod/*
 
 
   deploy:
-    working_directory: ~/repo
     docker:
       - image: cimg/base:2024.02
 
