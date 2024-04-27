@@ -61,12 +61,11 @@ jobs:
               ls /tmp
               ssh << parameters.host >> "mkdir webapp"
               scp /tmp/webapp.tar.gz << parameters.host >>:~/webapp/
-              # # scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
-              # ssh << parameters.host >> "tar -xzf ~/webapp/webapp.tar.gz -C ~/webapp/ && rm -f ~/webapp/webapp.tar.gz"
-              # ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build"
-              # ssh << parameters.host >> "cd webapp && docker container rm -f lancon-webapp || true"
-              # ssh << parameters.host >> "cd webapp && docker image prune -f"
-              # ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml up -d"
+              ssh << parameters.host >> "tar -xzf ~/webapp/webapp.tar.gz -C ~/webapp/ && rm -f ~/webapp/webapp.tar.gz"
+              ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build"
+              ssh << parameters.host >> "cd webapp && docker container rm -f lancon-webapp || true"
+              ssh << parameters.host >> "cd webapp && docker image prune -f"
+              ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml up -d"
 
                
 # With package
