@@ -11,6 +11,7 @@ jobs:
       - run:
           name: Test If we have a valid build or not
           command: |
+            pwd
             bun install
             bun run build
       - save_cache:
@@ -55,8 +56,11 @@ jobs:
           command: |
             ssh -o StrictHostKeyChecking=no << parameters.host >> 'exit'
             ssh << parameters.host >> "rm -rf ~/webapp/ || true"
-            scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
-            ssh << parameters.host >> "ls"
+            tar -czf webapp.tar.gz -C /home/circleci/project/ .
+            ls
+            scp webapp.tar.gz << parameters.host >>:~/webapp/
+            # scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
+            ssh << parameters.host >> "tar -xzf ~/webapp/webapp.tar.gz -C ~/webapp/ && rm -f ~/webapp/webapp.tar.gz"
             ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build"
             ssh << parameters.host >> "cd webapp && docker container rm -f lancon-webapp || true"
             ssh << parameters.host >> "cd webapp && docker image prune -f"
@@ -74,7 +78,9 @@ workflows:
 
       - package:
             requires:
-              - build     
+              - build    
+            tags:
+              only: /^release-.*/ 
 
       - deploy:
           filters:
