@@ -20,32 +20,47 @@ jobs:
           paths:
             - ./node_modules
 
-  deploy:
-    working_directory: ~/repo
+
+  package:
     docker:
       - image: cimg/base:2024.02
     steps:
       - checkout
-      - setup_remote_docker
-      - run:
-          command: |
-              which ssh-agent || ( apt-get install -qq openssh-client )
-              eval $(ssh-agent)
-              echo "$ENTRY_KEY" | base64 -d > access_key.pem
-              chmod 600 access_key.pem
-              pwd
-              ls
-              # ssh-add id_rsa
-              mkdir -p ~/.ssh
-              /bin/bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - docker/prod
+
+
+  deploy:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/base:2024.02
+
+    parameters:
+      host:
+        type: string
+        default: $DEV_HOST
+
+
+    steps:
+      - attach_workspace:
+          at: ./
       - run:
           name: Login to the server and deploy
           command: |
+            echo << parameters.host >> 
+            ssh -o StrictHostKeyChecking=no << parameters.host >> 'exit'
             ls
-            sh ./scripts/deploy.sh
+            ssh << parameters.host >> "rm -rf ~/webapp/ || true"
+            scp -r /home/circleci/project/ << parameters.host >>:~/webapp/
+            ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml build
+            ssh << parameters.host >> "cd webapp && docker container rm -f lancon-webapp || true"
+            ssh << parameters.host >> "cd webapp && docker image prune -f"
+            ssh << parameters.host >> "cd webapp && docker compose -f docker/prod/docker-compose.yml up -d"
 
                
-
+# With package
 workflows:
   build-and-deploy:
     jobs:
@@ -53,9 +68,14 @@ workflows:
           filters:
             tags:
               only: /^release-.*/
+
+      - package:
+            requires:
+              - build     
+
       - deploy:
           filters:
             tags:
                only: /^release-.*/
           requires:
-            - build
+            - package
